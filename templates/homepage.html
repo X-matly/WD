@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type = "text/javascript" src = "{{ url_for('static', filename = 'js/common.js') }}" ></script>
+    <link href="{{ url_for('static', filename = 'css/common.css') }}" rel="stylesheet">
+</head>
+<body>
+<div id="tag">
+    <h1>
+        TO-DO LIST
+    </h1>
+</div>
+<div id="button_place">
+    <p>
+        欢迎使用TO-DO LIST，在这里你可以创建属于你的待办事项，并设置其截止时间以及重要程度。希望你能借此变成理想中的自己！
+    </p> </br></br>
+    <p>
+        点击可显示事项或创建新事项：
+    </p>
+    <button class="but"  id="create_new_note">点击创建新事项</button>
+    </br></br>
+    <button class="but"  id="display_all_note">点击显示所有事项</button>
+    </br></br>
+    <p>
+        输入事项ID以跳转至详情页：
+    </p>
+    <form action="{{url_for('jump')}}" method="post" id="jumpForm">
+        <input maxlength="100" id="input_ID" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^\d]/g,'') " type="text" name="user_ID" required="required">
+        <input type="submit" name="submit" value="确定" id="jump" class="but"></input>
+    </form>
+</div>
+
+<div id="displayall" style="display: none"><br><br>
+    <p class="get_in">全部待办事项：</p>
+    <br>
+    <div id="sort_buttons" style="margin-left:5px">
+        <p class="get_in">你可以点击下列按钮来设置排序方式，默认升序排列</p>
+        <button id="sort_by_start_date" class="upwards">按开始日期排列</button> &emsp;&emsp;&emsp;&emsp;
+        <button id="sort_by_end_date" class="upwards">按截止日期排列</button> &emsp;&emsp;&emsp;&emsp;
+        <button id="sort_by_significance" class="upwards">按重要程度排列</button>
+        <br><br>
+    </div>
+    <p id="cue" class="get_in">
+</div>
+
+<div id="code" style="display: none">
+    <div id="hidden">
+        <h2 >请填写如下内容：</h2 ></br>
+        <form action="{{url_for('register')}}" method="post">
+            <p class="get_in">事项主题（不超过40字）：</p>
+            <input id="input_headlines" type="text" required="required" placeholder="简洁明了更惹人喜爱" name="headline" maxlength="40"></input>
+
+            </br></br>
+
+            <p class="get_in">是否完成：
+            </br>
+            <input type="radio" name="complete" value=0 class="choose" checked>未完成<br>
+            <input type="radio" name="complete" value=1 class="choose" >已完成<br>
+            </p>
+            </br></br>
+
+            <p class="get_in">请选择重要程度（1为最重要）：</p>
+            <dd>
+                <select id="year" name="significance">
+                    <script>
+                        for (var i = 1; i <= 100; i++) {
+                            document.write("<option value=" + i + ">" + i + "</option>");
+                        }
+                    </script>
+                </select>
+            </dd>
+
+            </br></br>
+
+            <p class="get_in">开始时间(年 月 日)：</p>
+            <input id="startTime" type="date" name="start_time" value="" required />
+            <!--
+            <dd>
+                <select id="year" name="start_year">
+                    <script>
+                        for (var i = 2022; i <= 2122; i++) {
+                            document.write("<option value=" + i + ">" + i + "</option>");
+                        }
+                    </script>
+                </select>
+                <select id="month" name="start_month">
+                    <script>
+                        for (var i = 1; i <= 12; i++) {
+                            document.write("<option value=" + i + ">" + i + "</option>");
+                        }
+                    </script>
+                </select>
+                <select id="day" name="start_day">
+                    <script>
+                        for (var i = 1; i <= 31; i++) {
+                            document.write("<option value=" + i + ">" + i + "</option>");
+                        }
+                    </script>
+                </select>
+            </dd>
+            -->
+            </br></br>
+
+            <p class="get_in">截止时间(年 月 日)：</p>
+            <input id="endTime" type="date" name="end_time" value="" required/>
+            <!--
+            <dd>
+                <select id="year" name="end_year">
+                    <script>
+                        for (var i = 2022; i <= 2122; i++) {
+                            document.write("<option value=" + i + ">" + i + "</option>");
+                        }
+                    </script>
+                </select>
+                <select id="month" name="end_month">
+                    <script>
+                        for (var i = 1; i <= 12; i++) {
+                            document.write("<option value=" + i + ">" + i + "</option>");
+                        }
+                    </script>
+                </select>
+                <select id="day" name="end_day">
+                    <script>
+                        for (var i = 1; i <= 31; i++) {
+                            document.write("<option value=" + i + ">" + i + "</option>");
+                        }
+                    </script>
+                </select>
+            </dd>
+            -->
+            </br></br>
+
+            <p class="get_in">待办事项内容（不超过5000字）：</p>
+            <textarea id="content" required="required" name="note" maxlength="5000"></textarea>
+
+            </br></br>
+
+            <input type="submit" name="submit" value="完结撒花" id="submit_button" class="upwards"></input>
+        </form>
+    </div>
+</div>
+<script>
+        var flag = {{ flag|tojson }}
+        if(flag===1)
+            alert('事项ID不存在！');
+        else if(flag===2)
+            alert('添加待办事项成功！');
+        else if(flag===3)
+            alert('请选择存在的日期！');
+        else if(flag===4)
+            alert('您成功修改了事项！');
+        else if(flag===5)
+            alert('您成功删除了事项！');
+        else if(flag===6)
+            alert('请为事项留下时间！');
+    </script>
+
+</body>
+</html>

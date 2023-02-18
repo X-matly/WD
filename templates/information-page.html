@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>information-page</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type = "text/javascript" src = "{{ url_for('static', filename = 'js/common.js') }}" ></script>
+    <link href="{{ url_for('static', filename = 'css/common.css') }}" rel="stylesheet">
+    <script type="text/javascript">
+    $(document).ready(function() {
+        function print_table(data) {
+            //朴实的print数据表函数
+            var tb = $("<table></table>");
+            for (var i = 0; i <= data.length; i++) {
+                if (!i) {
+                    var head = $("<tr></tr>");
+                    for (var k in data[0]) {
+                        if (k == "note") continue;
+                        var th = "<th>" + k + "</th>";
+                        head.append(th);
+                    }
+                    i++;
+                    tb.append(head);
+                }
+                var event = data[i - 1];
+                var tr = $("<tr></tr>");
+                for (var j in event) {
+                    if (j == "note") continue;
+                    if (j == "complete"){
+                        if(event[j]){
+                            tr.append("<td>已完成</td>");
+                        } else{
+                            tr.append("<td>未完成</td>");
+                        }
+                    } else{
+                        var td = "<td>" + event[j] + "</td>";
+                        tr.append(td);
+                    }
+                }
+                tb.append(tr);
+            }
+            $("#print_ThisEvent").html(tb);
+        }
+
+        var ThisID = {{ get_ID|tojson }};
+        $("#title").prepend("您正在查看ID为" + ThisID + "的");
+
+        $.ajax({
+            type: "POST",
+            url: "/get_single_data",
+            data: {
+                data: JSON.stringify({'sID': ThisID})
+            },
+            dataType: "json",
+            success: function (ThisEvent) {
+                print_table(ThisEvent);
+
+                var requestId = document.getElementById('input_headlines');
+                requestId.value = ThisEvent[0].headline;
+
+                $("#this_significance").html("当前事项的重要程度为：" + ThisEvent[0].significance);
+                $("#this_start_time").html("当前事项的开始时间为：" + ThisEvent[0].start_time);
+                $("#this_end_time").html("当前事项的截止时间为：" + ThisEvent[0].end_time);
+                $("#content").html(ThisEvent[0].note);
+                document.getElementById('id_hidden').value=ThisID;
+                document.getElementById('hid').value=ThisID;
+                if (ThisEvent[0].complete) {
+                    var temp1 = document.getElementById('is_complete');
+                    temp1.checked = true;
+                } else {
+                    var temp2 = document.getElementById('not_complete');
+                    temp2.checked = true;
+                }
+            },
+            error: function(errorInfo) {
+                alert("Failed");
+                console.log("errorInfo\n" + errorInfo);
+            }
+        });
+    });
+  </script>
+</head>
+
+<body>
+<div id="tag">
+  <h1>
+    TO-DO LIST
+  </h1>
+</div>
+<div id="code">
+  <div id="hidden_note"><br><br>
+    <h1 style="color: white" id="title">事项详情</h1><br><br>
+    <div id="print_ThisEvent" class="get_in">
+    </div>
+  </div>
+  <div>
+    <form id="modify" action="{{url_for('modify')}}" method="post"> <!-- action="需要一个接口" method="get" 将表单数据（form-data）以名称/值对的形式附加到 URL 中：URL?name=value&name=value -->
+        <input id="hid" type="text" required="required" name="ID" style="display: none"></input>
+      <p class="get_in">主题（不超过40字，您可以直接修改）：</p>
+      <input id="input_headlines" type="text" required="required" placeholder="简洁明了更惹人喜爱" name="headline" maxlength="40"></input>
+      </br></br>
+
+      <p class="get_in" id="this_significance"></p>
+      <p class="get_in">如要修改，请选择重要程度（1为最重要）：</p>
+      <dd>
+        <select name="significance">
+          <script>
+            for (var i = 1; i <= 100; i++) {
+              document.write("<option value=" + i + ">" + i + "</option>");
+            }
+          </script>
+        </select>
+      </dd>
+      <br><br>
+
+      <p class="get_in" id="this_start_time"></p>
+      <p class="get_in">如要修改，请设置修改后的开始时间（年、月、日）：</p>
+      <dd>
+        <select name="start_year">
+          <script>
+            for (var i = 2022; i <= 2122; i++) {
+              document.write("<option value=" + i + ">" + i + "</option>");
+            }
+          </script>
+        </select>
+        <select name="start_month">
+          <script>
+            for (var i = 1; i <= 12; i++) {
+              document.write("<option value=" + i + ">" + i + "</option>");
+            }
+          </script>
+        </select>
+        <select name="start_day">
+          <script>
+            for (var i = 1; i <= 31; i++) {
+              document.write("<option value=" + i + ">" + i + "</option>");
+            }
+          </script>
+        </select>
+      </dd>
+
+      </br></br>
+
+      <p class="get_in" id="this_end_time"></p>
+      <p class="get_in">如要修改，请设置修改后的截止时间（年、月、日）：</p>
+      <dd>
+        <select id="year" name="end_year">
+          <script>
+            for (var i = 2022; i <= 2122; i++) {
+              document.write("<option value=" + i + ">" + i + "</option>");
+            }
+          </script>
+        </select>
+        <select id="month" name="end_month">
+          <script>
+            for (var i = 1; i <= 12; i++) {
+              document.write("<option value=" + i + ">" + i + "</option>");
+            }
+          </script>
+        </select>
+        <select id="day" name="end_day">
+          <script>
+            for (var i = 1; i <= 31; i++) {
+              document.write("<option value=" + i + ">" + i + "</option>");
+            }
+          </script>
+        </select>
+      </dd>
+
+      </br></br>
+
+      <p class="get_in">待办事项内容（不超过5000字，您可以直接修改）：</p>
+      <textarea id="content" required="required" name="note" maxlength="5000"></textarea>
+
+      </br></br>
+
+      <p class="get_in">事项是否完成：<br>
+        <input id="is_complete" type="radio" value=1 name="complete" class="choose">已完成<br>
+        <input id="not_complete"type="radio" value=0 name="complete" class="choose">未完成<br>
+      </p>
+
+      <br><br>
+      <input type="submit" name="submit" value="更改完毕，确认提交" class="submit_list"></input>
+    </form>
+
+    <form action="{{url_for('delete_event')}}" method="post" id="remove">
+        <input id="id_hidden" type="text" required="required" name="ID" style="display: none"></input>
+        <input type="submit" value="删除此事项" style="color: red" class="submit_list" id="remove_button"></input>
+    </form>
+
+    <br>
+    <<form action="{{url_for('return_to_homepage')}}" method="post" id="return">
+      <input type="submit" value="返回主界面"  class="submit_list"></input>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,168 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+#tag {
+    width: 100%;
+    height: 40px;
+    background-color: rgb(61, 65, 65);
+    clear: both
+}
+
+#button_place {
+    position: absolute;
+    height:1130px;
+    width: 300px;
+    background-color: rgb(36, 39, 39);
+}
+
+.get_in{
+    color: whitesmoke;
+    font-size: 20px;
+    text-shadow: 0 0 10px;
+    font-family: "华文新魏";
+}
+
+#code {
+    margin-left: 350px;
+    height: 1100px;
+    background-color: black;
+}
+
+#displayall{
+    margin-left: 350px;
+    height: auto;
+    background-color: black;
+}
+
+#tag h1,#code h2 {
+    color: #fff;
+    text-shadow: 0 0 10px;
+    letter-spacing: 1px;
+    text-align: center;
+    font-family: "华文新魏";
+}
+
+#button_place p {
+    color: whitesmoke;
+    font-family: "宋体";
+    line-height: 1.5;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 15px;
+}
+
+
+#content {
+    overflow: auto;
+    border-top: 1px solid #312E3D;
+    border-left: 1px solid #312E3D;
+    border-right: 1px solid #312E3D;
+    border-bottom: 1px solid #312E3D;
+    border-radius: 4px;
+    background-color: black;
+    outline: none;
+    color: white;
+    font-size: 20px;
+    width: 95%;
+    height: 500px;
+}
+
+#submit_button{
+    width: 300px;
+    min-height: 50px;
+    display: block;
+    background-color: #c3cfe7;
+    border: 1px solid #3762bc;
+    color: rgb(37, 35, 35);
+    padding: 9px 14px;
+    font-size: 15px;
+    line-height: normal;
+    border-radius: 5px;
+    margin: 0;
+    text-align: center;
+}
+
+.submit_list
+{
+    width: 300px;
+    min-height: 50px;
+    display: block;
+    background-color: #c3cfe7;
+    border: 1px solid #3762bc;
+    color: rgb(37, 35, 35);
+    padding: 9px 14px;
+    font-size: 15px;
+    line-height: normal;
+    border-radius: 5px;
+    margin: 0;
+    text-align: center;
+}
+
+input {
+    width: 278px;
+    height: 18px;
+    margin-bottom: 10px;
+    overflow: auto;
+    outline: none;
+    padding: 10px;
+    font-size: 13px;
+    color: #fff;
+    text-shadow: 1px 1px 1px;
+    border-top: 1px solid #312E3D;
+    border-left: 1px solid #312E3D;
+    border-right: 1px solid #312E3D;
+    border-bottom: 1px solid #56536A;
+    border-radius: 4px;
+    background-color: #2D2D3F;
+}
+
+.but {
+    width: 300px;
+    min-height: 40px;
+    display: block;
+    background-color: #c3cfe7;
+    border: 1px solid #3762bc;
+    color: rgb(37, 35, 35);
+    padding: 9px 14px;
+    font-size: 15px;
+    line-height: normal;
+    border-radius: 5px;
+    margin: 0;
+}
+
+table
+{
+    width:80%;
+}
+
+table, td
+{
+    border: 1px solid white;
+    height: 50px;
+    text-align: center;
+}
+
+.upwards
+{
+    width: 140px;
+    min-height: 25px;
+    display: block;
+    background-color: #c3cfe7;
+    border: 1px solid #3762bc;
+    color: rgb(37, 35, 35);
+    padding: 9px 14px;
+    font-size: 15px;
+    line-height: normal;
+    border-radius: 5px;
+    margin: 0;
+    display:inline-block;
+}
